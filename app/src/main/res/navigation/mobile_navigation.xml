@@ -10,4 +10,10 @@
         android:name="com.taingdev.weatherapp.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/action_search"
+        android:name="com.taingdev.weatherapp.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search"/>
 </navigation>

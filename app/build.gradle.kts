@@ -1,9 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
 }
+
+val apiKeyPropertiesFile = rootProject.file("apikey.properties")
+val apiKeyProperties = Properties()
+apiKeyProperties.load(apiKeyPropertiesFile.inputStream())
 
 android {
     namespace = "com.taingdev.weatherapp"
@@ -17,6 +23,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY",  "\"${apiKeyProperties["openWeatherMapApiKey"]}\"")
     }
 
     buildTypes {
@@ -37,6 +45,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -60,6 +70,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
 
+    implementation(libs.keyboardvisibilityevent)
     implementation(libs.timber)
 
     testImplementation(libs.junit)

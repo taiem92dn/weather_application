@@ -25,4 +25,6 @@
     <style name="TextViewCaption" parent="TextAppearance.MaterialComponents.Caption" />
 
     <style name="TextViewHeadline6" parent="TextAppearance.MaterialComponents.Headline6" />
+
+    <style name="TextViewSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
 </resources>

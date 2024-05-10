@@ -5,6 +5,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.getSystemService
 
 object Utils {
     @JvmStatic
@@ -26,5 +29,15 @@ object Utils {
             return nwInfo.isConnected
         }
 
+    }
+
+
+    @JvmStatic
+    fun hideKeyboard(view: View?) {
+        if (view != null) {
+            val imm =
+                view.context.getSystemService<InputMethodManager>()
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
