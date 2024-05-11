@@ -3,7 +3,7 @@
 ## Android development
 - Implement Clean Architecture using Multi-module architecture
   - Separated to 3 layers or modules: **app**, **data**, **domain**
-  - **Domain** layer is full of abstraction: repositories, data sources and usecases
+  - **Domain** layer contains: Use Cases, Entities, abstraction of repositories and data sources.
   - **Data** layer is for handling data flow in the app such as Remote Data, Local Data
   - **Presentation** layer or "app" module for handling UI layer using MVVM architecture that associates with Architecture Components including: Navigation, ViewModel, StateFlow, LiveData, DataBinding, Lifecycles
 - Hilt for dependency injection
