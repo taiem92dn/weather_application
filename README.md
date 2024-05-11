@@ -10,6 +10,7 @@
 - Retrofit for requesting API
 - Use Kotlin Coroutines
 - Use Material Design
+- Covered up by Unit Tests
   
  ## Supported OS versions
  Minimum Android 5.0 Lollipop
