@@ -22,10 +22,18 @@ okhttp="4.10.0"
 timber="5.0.1"
 srl="1.1.0"
 
+mockito="5.3.1"
+mockk = "1.12.2"
+coroutines_test = "1.8.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito" }
+mockk = { group = "io.mockk", name="mockk", version.ref = "mockk" }
+mockk-agent-jvm = { group = "io.mockk", name="mockk-agent-jvm", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-test", version.ref = "coroutines_test" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }

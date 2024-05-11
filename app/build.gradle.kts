@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.config.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -39,11 +40,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JvmTarget.JVM_11.toString()
     }
     buildFeatures {
         viewBinding = true
@@ -79,6 +80,10 @@ dependencies {
     implementation(libs.timber)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.agent.jvm)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
