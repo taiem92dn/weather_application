@@ -16,4 +16,14 @@
         android:name="com.taingdev.weatherapp.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/action_city_detail"
+        android:name="com.taingdev.weatherapp.ui.citydetail.CityDetailFragment"
+        android:label="@string/title_city_detail"
+        tools:layout="@layout/fragment_city_detail">
+        <argument
+            android:name="extra_city"
+            app:argType="com.taingdev.weatherapp.model.CityItem" />
+    </fragment>
 </navigation>

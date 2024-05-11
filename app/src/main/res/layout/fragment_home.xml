@@ -38,15 +38,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_margin="@dimen/margin_normal"
                 android:textAppearance="@style/TextViewHeadline5"
                 android:text="@string/text_favorite_cities" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_favorite_cities"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

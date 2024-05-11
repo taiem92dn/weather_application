@@ -2,6 +2,7 @@ package com.taingdev.weatherapp.di.module
 
 import android.app.Application
 import com.taingdev.weatherapp.BuildConfig
+import com.taingdev.weatherapp.data.remote.OpenWeatherMapService
 import com.taingdev.weatherapp.network.INetworkCheckService
 import com.taingdev.weatherapp.util.Utils
 import dagger.Module
@@ -11,6 +12,8 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -34,8 +37,7 @@ object NetworkModule {
         val addQueryTokenInterceptor = Interceptor { chain ->
             val original = chain.request()
             val url = original.url.newBuilder()
-                .addQueryParameter("api_key", apiKey)
-                .addQueryParameter("language", "en-US")
+                .addQueryParameter("appid", apiKey)
                 .build()
             val request = original.newBuilder().url(url).build()
 
@@ -44,7 +46,24 @@ object NetworkModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(addQueryTokenInterceptor)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOpenWeatherMapService(retrofit: Retrofit): OpenWeatherMapService {
+        return retrofit.create(OpenWeatherMapService::class.java)
     }
 
     @Provides

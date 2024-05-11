@@ -1,4 +1,4 @@
-package com.tngdev.weatherapp.data
+package com.taingdev.weatherapp.data
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

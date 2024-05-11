@@ -8,4 +8,16 @@
     <string name="speech_not_supported">Sorry! Your device doesn\\\'t support speech input</string>
     <string name="speech_prompt">Search city</string>
     <string name="title_search">Search</string>
+    <string name="title_city_detail">City Detail</string>
+    <string name="text_country">Country:</string>
+    <string name="retry_button">Retry</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="text_something_went_wrong">Something went wrong</string>
+    <string name="text_humidity">Humidity </string>
+    <string name="text_feels_like">Feels like %d\u00B0</string>
+    <string name="text_wind_speed">Wind Speed %.1fm/s</string>
+    <string name="text_wind_degree">Wind Degree %d\u00B0</string>
+    <string name="text_wind_condition">Wind: %.1fm/s | %d\u00B0</string>
+    <string name="text_saved_to_favorite">Saved to Favorite</string>
+    <string name="removed_from_favorite">Removed from favorite</string>
 </resources>

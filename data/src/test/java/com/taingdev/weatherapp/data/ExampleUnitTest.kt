@@ -1,4 +1,4 @@
-package com.tngdev.weatherapp.data
+package com.taingdev.weatherapp.data
 
 import org.junit.Test
 

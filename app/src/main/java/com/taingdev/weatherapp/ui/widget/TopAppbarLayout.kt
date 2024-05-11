@@ -31,8 +31,6 @@ class TopAppBarLayout @JvmOverloads constructor(
             if (isLandscape) {
                 fitsSystemWindows = false
             }
-
-            setExpanded(false)
         } else {
             simpleAppbarBinding =
                 SimpleAppbarLayoutBinding.inflate(LayoutInflater.from(context), this, true)

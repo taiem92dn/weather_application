@@ -11,11 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
@@ -25,16 +29,27 @@ import com.google.android.material.transition.MaterialFadeThrough
 import com.taingdev.weatherapp.R
 import com.taingdev.weatherapp.databinding.FragmentSearchBinding
 import com.taingdev.weatherapp.extensions.focusAndShowKeyboard
+import com.taingdev.weatherapp.model.CityItem
+import com.taingdev.weatherapp.network.ApiResource
+import com.taingdev.weatherapp.ui.adapter.SearchCityAdapter
+import com.taingdev.weatherapp.util.EXTRA_CITY
 import com.taingdev.weatherapp.util.Utils
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.observeOn
+import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import java.util.Locale
 
+@AndroidEntryPoint
 class SearchFragment: Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-//    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var searchAdapter: SearchCityAdapter
     private var query: String? = null
+
+    private val searchViewModel by viewModels<SearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,10 +70,43 @@ class SearchFragment: Fragment() {
 
         setupRecyclerView()
 
+        bindEvents()
+        binding.appBarLayout.statusBarForeground =
+            MaterialShapeDrawable.createWithElevationOverlay(requireContext())
+
+        observeData()
+    }
+
+    private fun observeData() {
+        lifecycleScope.launch {
+            searchViewModel.cities.collect {
+                when (it) {
+                    is ApiResource.Success -> {
+                        showData(it.data)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            showLoading = searchViewModel.showLoading
+            showError = searchViewModel.showError
+            errorMessage = searchViewModel.errorMessage
+        }
+    }
+
+    private fun bindEvents() {
         binding.voiceSearch.setOnClickListener { startMicSearch() }
         binding.clearText.setOnClickListener {
             binding.searchView.clearText()
-//            searchAdapter.swapDataSet(listOf())
+            showData(emptyList())
+            searchViewModel.showError.value = false
+        }
+        binding.layoutProgressBar.btRetry.setOnClickListener {
+            if (!query.isNullOrEmpty()) search(query!!)
         }
         binding.searchView.apply {
             doAfterTextChanged {
@@ -79,7 +127,7 @@ class SearchFragment: Fragment() {
         }
 
         postponeEnterTransition()
-        view.doOnPreDraw {
+        requireView().doOnPreDraw {
             startPostponedEnterTransition()
         }
 
@@ -90,28 +138,42 @@ class SearchFragment: Fragment() {
                 binding.keyboardPopup.show()
             }
         }
-        binding.appBarLayout.statusBarForeground =
-            MaterialShapeDrawable.createWithElevationOverlay(requireContext())
-    }
-    private fun showData(data: List<Any>) {
-        if (data.isNotEmpty()) {
-//            searchAdapter.swapDataSet(data)
-        } else {
-//            searchAdapter.swapDataSet(ArrayList())
+
+        searchAdapter.onItemClickListener = {
+            navigateToDetail(it)
         }
     }
 
+    private fun navigateToDetail(cityItem: CityItem) {
+        findNavController().navigate(
+            R.id.action_city_detail,
+            bundleOf(EXTRA_CITY to  cityItem),
+            null
+        )
+    }
+
+    private fun showData(data: List<CityItem>?) {
+        if (!data.isNullOrEmpty()) {
+            searchAdapter.submitList(data)
+        } else {
+            searchAdapter.submitList(ArrayList())
+        }
+        binding.empty.isVisible = data.isNullOrEmpty()
+                && searchViewModel.showError.value == false
+                && searchViewModel.showLoading.value == false
+    }
+
     private fun setupRecyclerView() {
-//        searchAdapter = SearchAdapter(requireActivity(), emptyList())
-//        searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-//            override fun onChanged() {
-//                super.onChanged()
-//                binding.empty.isVisible = searchAdapter.itemCount < 1
-//            }
-//        })
+        searchAdapter = SearchCityAdapter()
+        searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                binding.empty.isVisible = searchAdapter.itemCount < 1
+            }
+        })
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-//            adapter = searchAdapter
+            adapter = searchAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -130,6 +192,7 @@ class SearchFragment: Fragment() {
         TransitionManager.beginDelayedTransition(binding.appBarLayout)
         binding.voiceSearch.isGone = query.isNotEmpty()
         binding.clearText.isVisible = query.isNotEmpty()
+        searchViewModel.handleSearch(query)
     }
 
     private fun startMicSearch() {
