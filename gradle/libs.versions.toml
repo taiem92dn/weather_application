@@ -25,6 +25,7 @@ srl="1.1.0"
 mockito="5.3.1"
 mockk = "1.12.2"
 coroutines_test = "1.8.1"
+core_testing = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", versio
 mockk = { group = "io.mockk", name="mockk", version.ref = "mockk" }
 mockk-agent-jvm = { group = "io.mockk", name="mockk-agent-jvm", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-test", version.ref = "coroutines_test" }
+arch-core-testing = { group = "androidx.arch.core", name="core-testing", version.ref = "core_testing" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
